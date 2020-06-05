@@ -9,17 +9,17 @@ void creatKmean(Mat src, Mat &mask)
 	int width = src.cols;
 	int height = src.rows;
 	int pix = width * height;
-	int cluster = 2;  //·Ö³É¼¸Àà
-	Mat labels;   //±ê¼ÇÍ¼
-	Mat centers;  //³õÊ¼»¯´ØĞÄ
+	int cluster = 2;  //åˆ†æˆå‡ ç±»
+	Mat labels;   //æ ‡è®°å›¾
+	Mat centers;  //åˆå§‹åŒ–ç°‡å¿ƒ
 
 	Mat sumpleData = src.reshape(3, pix);
-	Mat km_data;  //¾ÛÀàÊı¾İ£¬¸¡µãĞÍ
+	Mat km_data;  //èšç±»æ•°æ®ï¼Œæµ®ç‚¹å‹
 	sumpleData.convertTo(km_data, CV_32F);
-	TermCriteria termcriteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 10, 0.1);  //µü´ú×î´ó´ÎÊı
-	kmeans(km_data, cluster, labels, termcriteria, cluster, KMEANS_PP_CENTERS, centers);  //Kmeans++Ëã·¨³õÊ¼»¯´ØĞÄ
+	TermCriteria termcriteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.1);  //è¿­ä»£åˆ°æœ€å¤§æ¬¡æ•°ä¸ºæ­¢
+	kmeans(km_data, cluster, labels, termcriteria, cluster, KMEANS_PP_CENTERS, centers);  //Kmeans++ç®—æ³•åˆå§‹åŒ–ç°‡å¿ƒ
 
-	for (int i = 0; i < height; i++)  //¶şÖµ»¯
+	for (int i = 0; i < height; i++)  //äºŒå€¼åŒ–
 	{
 		for (int j = 0; j < width; j++)
 		{
