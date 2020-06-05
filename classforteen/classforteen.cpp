@@ -9,21 +9,25 @@ void creatKmean(Mat src, Mat &mask)
 	int width = src.cols;
 	int height = src.rows;
 	int pix = width * height;
-	int cluster = 2;
-	Mat labels;
-	Mat centers;
+	int cluster = 2;  //分成几类
+	Mat labels;   //标记图
+	Mat centers;  //初始化簇心
 
 	Mat sumpleData = src.reshape(3, pix);
-	Mat km_data;
+	Mat km_data;  //聚类数据，浮点型
 	sumpleData.convertTo(km_data, CV_32F);
-	TermCriteria termcriteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 10, 0.1);
-	kmeans(km_data, cluster, labels, termcriteria, cluster, KMEANS_PP_CENTERS, centers);
+	TermCriteria termcriteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 10, 0.1);  //迭代最大次数
+	kmeans(km_data, cluster, labels, termcriteria, cluster, KMEANS_PP_CENTERS, centers);  //Kmeans++算法初始化簇心
 
-	vector<uchar> fg = { 0,255 };
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < height; i++)  //二值化
 	{
 		for (int j = 0; j < width; j++)
-			mask.at<uchar>(i, j) = fg[labels.at<int>(i*width + j)];
+		{
+			if (labels.at<int>(i*width + j) == 0)
+				mask.at<uchar>(i, j) = 0;
+			else
+				mask.at<uchar>(i, j) = 255;
+		}
 	}
 }
 
